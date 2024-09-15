@@ -157,5 +157,37 @@ if(cancelImageButton){
         cancelImageButton.classList.add("cancel-image-button-d");
     })
 }
+//sort
+const sort = document.querySelector("[sort]");
 
+if(sort){
+    const selectorSort = sort.querySelector("[selector-sort]");
+    const clearSort = sort.querySelector("[clear-sort]");
+    const url = new URL(window.location.href);
+    selectorSort.addEventListener("change",(e)=>{
+        const value = e.target.value;
+        if(value){
+            const [sortKey,sortValue]=value.split("-");
+            url.searchParams.set("sortKey",sortKey);
+            url.searchParams.set("sortValue",sortValue);
+            window.location.href=url.href;
+        }
+    })
+    clearSort.addEventListener("click",()=>{
+        url.searchParams.delete("sortKey");
+        url.searchParams.delete("sortValue");
+        window.location.href=url.href;
+    })
+    const sortKey = url.searchParams.get("sortKey");
+    const sortValue = url.searchParams.get("sortValue");
+    if(sortKey && sortValue){
+        const stringSelected = `${sortKey}-${sortValue}`;
+        const optionSelected = selectorSort.querySelector(`option[value='${stringSelected}']`);
+        if(optionSelected){
+            optionSelected.selected=true;
+        }
+    }
+}
+//end sort
 });
+

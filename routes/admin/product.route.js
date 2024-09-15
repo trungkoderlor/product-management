@@ -21,6 +21,7 @@ router.get('/edit/:id', Controller.edit);
 router.get('/detail/:id', Controller.detail);
 router.patch('/edit/:id',
     upload.single("thumbnail"),
+    uploadCloud.upload,
     validate.createPost,
     Controller.editPatch);
 router.get('/trash', Controller.trash);

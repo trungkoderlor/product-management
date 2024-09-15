@@ -13,6 +13,10 @@ module.exports.index = async (req, res) => {
     let find = {
         deleted: false
     }
+    let sort={};
+    if (req.query.sortKey && req.query.sortValue){
+        sort[req.query.sortKey]=req.query.sortValue;
+    } else sort.position="desc";
     if (objSearch.keyword) {
         find.title = objSearch.regex;
     }
@@ -28,7 +32,7 @@ module.exports.index = async (req, res) => {
         , req.query, countDocuments);
     const products = await Product
         .find(find)
-        .sort({ position: "desc" })
+        .sort(sort)
         .limit(objectPanigation.limit)
         .skip(objectPanigation.skip);
     res.render("admin/pages/products/index", {
