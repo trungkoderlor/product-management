@@ -1,0 +1,118 @@
+extends ../../layouts/default.pug
+include ../../mixins/fillter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
+block main
+    script(src="/admin/js/product.js")
+    +alert-success(expressFlash,5000)
+    +alert-error(expressFlash,5000)
+           
+    h1 Danh Sách Sản Phẩm Đã Xóa
+    .card.mb-3 
+        .card-header Bộ Lọc và Tìm Kiếm
+        .card-body
+            .row
+                .col-6
+                    +fillter-status(fillterStatus) 
+                .col-6 
+                    +search(keywords)
+    .card.mb-3 
+        .card-header Danh Sách
+            .card-body
+                .row
+                    .col-8
+                        +form-change-multi-trash(`${prefixAdmin}/products/change-multi?_method=PATCH`) 
+            
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                    thead 
+                        tr 
+                            th 
+                                input(
+                                    type="checkbox" 
+                                    name="checkall"
+                                    form="formChangeMulti"
+                                )
+                            th STT
+                            th Hình Ảnh
+                            th Tên Sản Phẩm
+                            th Giá
+                            th Vị trí
+                            th Trạng thái
+                            th Thao Tác
+                        
+                    tbody
+                        each item, index in products
+                            tr
+                                td 
+                                    input(
+                                        type="checkbox" 
+                                        value=item.id
+                                        name="id" 
+                                        
+                                    ) 
+                                td #{objectPanigation.skip+index+1}
+                                td 
+                                    img(src=item.thumbnail, alt='Product Image', width='100px' height="auto")
+                                td #{item.title}
+                                td #{item.price}$
+                                td 
+                                    input(
+                                        type="number"
+                                        value=item.position 
+                                        style="width:60px"
+                                        min="1"
+                                        name="position"
+                                    )
+                                td 
+                                    if (item.status=="active")
+                                        a(
+                                            href="javascript:" 
+                                            class="badge badge-success"
+                                            button-change-status 
+                                            data-id=item.id 
+                                            data-status=item.status                    
+                                        ) Hoạt động
+                                    else 
+                                        a(
+                                            href="javascript:" 
+                                            class="badge badge-danger"
+                                            button-change-status 
+                                            data-id=item.id 
+                                            data-status=item.status
+                                        ) Không hoạt động
+                                td 
+                                    button(
+                                        class = 'btn btn-warning btn-sm'
+                                        button-restore
+                                        data-id= item.id
+                                        ) Khôi phục
+                                    button(
+                                        class = 'btn btn-danger btn-sm'
+                                        button-delete
+                                        data-id=item.id
+                                    ) Xóa vĩnh viễn
+    +pagination(objectPanigation)
+    form(
+        action="" 
+        method="POST"
+        id="formChangeStatus"
+        path=`${prefixAdmin}/products/change-status`
+    ) 
+    form(
+        action="" 
+        method="POST"
+        id="formDeleteItem"
+        path=`${prefixAdmin}/products/trash/delete`
+    ) 
+    form(
+        action="" 
+        method="POST"
+        id="formRestoreItem"
+        path=`${prefixAdmin}/products/trash/restore`
+    )
+    
