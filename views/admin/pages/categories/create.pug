@@ -2,11 +2,10 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
-    h1(class="mb-4") Thêm Mới Sản Phẩm
-    +alert-error(expressFlash,5000)
+    h1(class="mb-4") Thêm Mới Danh Mục Sản Phẩm
     form(
-        action=`${prefixAdmin}/products/create`
-        id="form-create-product"
+        action=`${prefixAdmin}/categories/create`
+        id="form-create-procategoriesduct"
         method="POST"
         enctype="multipart/form-data"
     )
@@ -20,6 +19,16 @@ block main
                 required
             )
         div(class="form-group")
+          label(for="parent_id") Danh Mục Cha
+          input(
+            type="text"
+              class="form-control"
+              id="parent_id"
+              name="parent_id"
+              rows="5"
+              
+          )
+        div(class="form-group")
             label(for="desc") Mô tả
             textarea(
                 class="form-control textarea-mce"
@@ -27,41 +36,6 @@ block main
                 name="description"
                 rows="5"
             )
-        div(class="form-group")
-            label(for="price") Giá
-            input(
-                type="number"
-                class="form-control"
-                id="price"
-                name="price"
-                value="0"
-                min="0"
-            )
-
-        div(class="form-group")
-            label(for="discount") % Giảm giá
-            input(
-                type="number"
-                class="form-control"
-                id="discount"
-                name="discountPercentage"
-                value="0"
-                min="0"
-            )
-        div(class="form-group")
-            label(for="stock") Số lượng
-            input(
-                type="number"
-                class="form-control"
-                id="stock"
-                name="stock"
-                value="0"
-                min="0"
-            )
-        div(class="form-group"
-            upload-image
-            )
-            
             label(for="thumbnail") Ảnh
             input(
                 type="file"
@@ -76,12 +50,6 @@ block main
                 upload-image-preview
                 class="image-preview"
             )
-            button(
-                type="button"
-                class = 'btn btn-danger btn-sm cancel-image-button-d'
-                cancel-image-button
-                style = "margin-top: 32px;margin-left: 10px;"
-            ) Hủy
         div(class="form-group")
             label(for="stock") Vị trí
             input(
@@ -92,6 +60,12 @@ block main
                 placeholder="Tự động tăng"
                 min="1"
             )
+            button(
+                type="button"
+                class = 'btn btn-danger btn-sm cancel-image-button-d'
+                cancel-image-button
+                style = "margin-top: 32px;margin-left: 10px;"
+            ) Hủy       
         div(class="form-group form-check form-check-inline")
             input(
                 type="radio"
@@ -101,6 +75,7 @@ block main
                 value="active"
                 checked
             )
+        
             label(for="statusActive" class="form-check-label") Hoạt động
         div(class="form-group form-check form-check-inline")
             input(
