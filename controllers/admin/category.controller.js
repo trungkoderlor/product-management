@@ -2,6 +2,7 @@ const systemConfig = require('../../config/system');
 const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
 const fillterStatusHelper = require('../../helpers/fillterStatus');
+const createTreeHelper = require('../../helpers/createTree');
 const Category = require('../../models/category.model');
 // [GET] /admin/categories
 module.exports.index = async (req, res) => {
@@ -20,7 +21,9 @@ module.exports.index = async (req, res) => {
   if (req.query.status) {
       find.status = req.query.status;
   }
+  
   const countDocuments= await Category.countDocuments(find);
+
   let objectPanigation = paginationHelper(
       {
           limit: 4,
@@ -30,11 +33,10 @@ module.exports.index = async (req, res) => {
   const records = await Category
       .find(find)
       .sort(sort)
-      .limit(objectPanigation.limit)
-      .skip(objectPanigation.skip);
+  const newRecords = createTreeHelper.Tree(records);
   res.render("admin/pages/categories/index", {
     pageTitle: "Trang Danh Mục Sản Phẩm",
-    records: records,
+    records: newRecords,
     fillterStatus: fillterStatus,
     keywords: objSearch.keyword,
     objectPanigation: objectPanigation,
@@ -49,9 +51,18 @@ module.exports.index = async (req, res) => {
 };
 
 // [GET] /admin/categories/create
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+  let find ={
+    deleted: false
+  };
+  
+  
+  const records = await Category.find(find);
+  const newRecords = createTreeHelper.Tree(records);
+  console.log(newRecords); 
   res.render("admin/pages/categories/create", {
-    pageTitle: "Tạo Danh Mục Sản Phẩm"
+    pageTitle: "Tạo Danh Mục Sản Phẩm",
+    records: newRecords
     }
   );
 };
