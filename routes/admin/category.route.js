@@ -14,4 +14,10 @@ router.post('/create',
   Controller.createPost);
 router.patch('/change-status/:status/:id',Controller.changeStatus);
 router.patch('/change-multi',Controller.changeMulti);
+router.get('/edit/:id',Controller.edit);
+router.patch('/edit/:id',
+  upload.single("thumbnail"),
+  uploadCloud.upload,
+  validate.createPost,
+  Controller.editPatch);
 module.exports = router;

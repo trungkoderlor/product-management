@@ -59,7 +59,6 @@ module.exports.create = async (req, res) => {
   
   const records = await Category.find(find);
   const newRecords = createTreeHelper.Tree(records);
-  console.log(newRecords); 
   res.render("admin/pages/categories/create", {
     pageTitle: "Tạo Danh Mục Sản Phẩm",
     records: newRecords
@@ -141,3 +140,35 @@ module.exports.changeStatus = async (req, res) => {
 
   res.redirect('back');
 }
+//[GET] /admin/categories/edit/:id
+module.exports.edit = async (req, res) => {
+  try{
+    const id = req.params.id;
+  let find ={
+    _id : id,
+    deleted: false
+  };
+  const records = await Category.find({
+    deleted: false
+  });
+  const newRecords = createTreeHelper.Tree(records);
+  const record = await Category.findOne(find);
+  res.render("admin/pages/categories/edit", {
+    pageTitle: "Chỉnh Sửa Danh Mục Sản Phẩm",
+    record: record,
+    records: newRecords
+    }
+  );
+  }
+  catch(err){
+    res.redirect(`${systemConfig.prefixAdmin}/categories`);
+  }
+  
+};
+//[PATCH] /admin/categories/edit/:id
+module.exports.editPatch = async (req, res) => {
+  const id = req.params.id;
+  req.body.position = parseInt(req.body.position);
+  await Category.updateOne({ _id: id }, req.body);
+  res.redirect('back');
+};

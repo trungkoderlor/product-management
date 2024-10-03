@@ -4,6 +4,8 @@ const searchHelper = require('../../helpers/search');
 const paginationHelper = require('../../helpers/pagination');
 const fillterStatusHelper = require('../../helpers/fillterStatus');
 const systemConfig = require('../../config/system');
+const createTreeHelper = require('../../helpers/createTree');
+const Category = require('../../models/category.model');
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
 
@@ -183,12 +185,17 @@ module.exports.deleteTrash = async (req, res) => {
 }
 //[GET] /admin/products/create
 module.exports.create = async (req, res) => {
+    const records = await Category.find({
+        deleted: false
+      });
+    const newRecords = createTreeHelper.Tree(records);
     res.render("admin/pages/products/create", {
         pageTitle: "Trang Tạo Sản Phẩm",
         expressFlash:{
             success: req.flash('success'),
             error: req.flash('error')
-        } 
+        },
+        records: newRecords
     });
 }
 //[POST] /admin/products/create
@@ -220,6 +227,10 @@ module.exports.edit = async (req, res) => {
             deleted: false,
             _id: id
         }
+        const records = await Category.find({
+            deleted: false
+          });
+        const newRecords = createTreeHelper.Tree(records);
         const product = await Product.findOne(find);
         res.render("admin/pages/products/edit", {
             pageTitle: "Trang Sửa Sản Phẩm",
@@ -227,7 +238,8 @@ module.exports.edit = async (req, res) => {
                 success: req.flash('success'),
                 error: req.flash('error')
             },
-            product: product
+            product: product,
+            records: newRecords
         });
     }
     catch (error) {

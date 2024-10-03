@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/select-tree.pug
 block main 
     h1(class="mb-4") Chỉnh Sửa Sản Phẩm
     +alert-error(expressFlash,5000)
@@ -23,9 +23,18 @@ block main
                 
             )
         div(class="form-group")
+            label(for="category_id") Danh Mục 
+            select(
+                class="form-control"
+                id="category_id"
+                name="category_id"
+            )
+                option(value="") Danh Mục 
+                +select-tree(records,1,product.category_id)
+        div(class="form-group")
             label(for="desc") Mô tả
             textarea(
-                class="form-control"
+                class="form-control textarea-mce"
                 id="desc"
                 name="description"
                 rows="5"
