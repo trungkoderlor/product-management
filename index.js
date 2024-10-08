@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const moment = require('moment');
 const methodOverride = require('method-override');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -43,6 +44,7 @@ route(app);
 routeAdmin(app);
 //app locatiom var
 app.locals.prefixAdmin = system.prefixAdmin;
+app.locals.moment = moment;
 app.listen(port, ()=>{
     console.log(`Server is running at http://localhost:${port}`);
 })

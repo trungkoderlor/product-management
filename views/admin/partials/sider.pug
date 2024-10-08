@@ -3,11 +3,22 @@
         ul 
             li 
                 a(href=`${prefixAdmin}/dashboard`) Dashboard
-            li 
-                a(href=`${prefixAdmin}/categories`) Categories
-            li 
-                a(href=`${prefixAdmin}/products`) Products
-            li 
-                a(href=`${prefixAdmin}/roles`) Roles
-            li  
-                a(href=`${prefixAdmin}/products/trash`) Trash
+            if(role.permissions.includes('category_view'))
+                li 
+                    a(href=`${prefixAdmin}/categories`) Categories
+            if(role.permissions.includes('product_view'))
+                li 
+                    a(href=`${prefixAdmin}/products`) Products
+            if(role.permissions.includes('role_view'))
+                li 
+                    a(href=`${prefixAdmin}/roles`) Roles
+            if(role.permissions.includes('role_permission'))
+                li 
+                    a(href=`${prefixAdmin}/roles/permissions`) Permissons
+            if(role.permissions.includes('account_view'))
+                li 
+                    a(href=`${prefixAdmin}/accounts`) Accounts
+            if(role.permissions.includes('order_view'))
+                li  
+                    a(href=`${prefixAdmin}/products/trash`) Trash
+            

@@ -4,6 +4,7 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
+include ../../mixins/moment.pug
 block main
     script(src="/admin/js/product.js")
     +alert-success(expressFlash,5000)
@@ -43,6 +44,8 @@ block main
                             th Giá
                             th Vị trí
                             th Trạng thái
+                            th Người xóa 
+                            th Thời gian xóa
                             th Thao Tác
                         
                     tbody
@@ -85,6 +88,9 @@ block main
                                             data-id=item.id 
                                             data-status=item.status
                                         ) Không hoạt động
+                                td #{item.accountName}
+                                td 
+                                    +formatDate(item.deletedBy.deletedAt)
                                 td 
                                     button(
                                         class = 'btn btn-warning btn-sm'
