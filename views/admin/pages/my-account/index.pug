@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  .container
+    .row
+      .col-md-12
+        h1 Chi tiết tài khoản
+        .card
+          .card-header
+            h3 #{user.fullname}
+          .card-body
+            dl.row
+              dt.col-sm-3 Tên đầy đủ
+              dd.col-sm-9 #{user.fullname}
+              
+              dt.col-sm-3 Email
+              dd.col-sm-9 #{user.email}
+              
+              dt.col-sm-3 Số điện thoại
+              dd.col-sm-9 #{user.phone}
+              
+              dt.col-sm-3 Avatar
+              dd.col-sm-9 
+                img(src=user.avatar, alt='Avatar', width='100px', height='100px')
+              
+              dt.col-sm-3 Vai trò
+              dd.col-sm-9 #{role.title}
+              
+              dt.col-sm-3 Trạng thái
+              dd.col-sm-9 #{user.status}

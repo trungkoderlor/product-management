@@ -31,6 +31,13 @@ block main
                     option(value="") Danh Mục 
                     +select-tree(records)
             div(class="form-group")
+                .form-group.form-check.form-check-inline
+                    input(type="radio" class="form-check-input" id="featured" name="featured" value="1")
+                    label(for="featured") Nổi bật
+                .form-group.form-check.form-check-inline
+                    input(type="radio" class="form-check-input" id="featured" name="featured" value="0" checked)
+                    label(for="featured") Không nổi bật
+            div(class="form-group")
                 label(for="desc") Mô tả
                 textarea(
                     class="form-control textarea-mce"

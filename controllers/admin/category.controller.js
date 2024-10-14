@@ -11,28 +11,28 @@ module.exports.index = async (req, res) => {
   let find = {
     deleted: false
   };
-  let sort={};
-  if (req.query.sortKey && req.query.sortValue){
-    sort[req.query.sortKey]=req.query.sortValue;
-  } else sort.position="desc";
+  let sort = {};
+  if (req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  } else sort.position = "desc";
   if (objSearch.keyword) {
     find.title = objSearch.regex;
   }
   if (req.query.status) {
-      find.status = req.query.status;
+    find.status = req.query.status;
   }
-  
-  const countDocuments= await Category.countDocuments(find);
+
+  const countDocuments = await Category.countDocuments(find);
 
   let objectPanigation = paginationHelper(
-      {
-          limit: 4,
-          currentPage: 1
-      }
-      , req.query, countDocuments);
+    {
+      limit: 4,
+      currentPage: 1
+    }
+    , req.query, countDocuments);
   const records = await Category
-      .find(find)
-      .sort(sort)
+    .find(find)
+    .sort(sort)
   const newRecords = createTreeHelper.Tree(records);
   res.render("admin/pages/categories/index", {
     pageTitle: "Trang Danh Mục Sản Phẩm",
@@ -42,99 +42,105 @@ module.exports.index = async (req, res) => {
     objectPanigation: objectPanigation,
     expressFlash:
     {
-        success: req.flash('success'),
-        error: req.flash('error')
+      success: req.flash('success'),
+      error: req.flash('error')
 
     }
-    }
+  }
   );
 };
 
 // [GET] /admin/categories/create
 module.exports.create = async (req, res) => {
-  let find ={
+  let find = {
     deleted: false
   };
-  
-  
+
+
   const records = await Category.find(find);
   const newRecords = createTreeHelper.Tree(records);
   res.render("admin/pages/categories/create", {
     pageTitle: "Tạo Danh Mục Sản Phẩm",
     records: newRecords
-    }
+  }
   );
 };
 //[POST] /admin/categories/create
 module.exports.createPost = async (req, res) => {
-  if (!req.body.title) {
+  const permissions = res.locals.role.permissions;
+  if (permissions.includes('category_create')) {
+    if (!req.body.title) {
       req.flash("error", `vui lòng nhập tiêu đề !`);
       res.redirect('back');
       return;
-  }
-  if (req.body.position == "") {
-    const count = await Category.countDocuments();
-    req.body.position = count + 1;
-  } else {
+    }
+    if (req.body.position == "") {
+      const count = await Category.countDocuments();
+      req.body.position = count + 1;
+    } else {
       req.body.position = parseInt(req.body.position);
+    }
+    const record = new Category(req.body);
+    await record.save();
+    res.redirect(`${systemConfig.prefixAdmin}/categories`);
   }
-  const record = new Category(req.body);
-  await record.save();
-  res.redirect(`${systemConfig.prefixAdmin}/categories`);
+  else{
+    return;
+  }
 }
 //[PATCH] /admin/categories/change-multi
-module.exports.changeMulti = async (req, res)=>{
+module.exports.changeMulti = async (req, res) => {
   const ids = req.body.ids.split(", ");
-    const type = req.body.type;
-    switch (type) {
-        case "active":
-            await Category.updateMany({ _id: { $in: ids } }, { status: "active" });
-            req.flash("success", `${ids.length} sản phẩm cập nhật trạng thái thành công`);
-            break;
-        case "inactive":
-            await Category.updateMany({ _id: { $in: ids } }, { status: "inactive" });
-            req.flash("success", `${ids.length} sản phẩm cập nhật trạng thái thành công`);
-            break;
-        case "delete-all-forever":
-            await Category.deleteMany({ _id: { $in: ids } });
-            req.flash("success", `${ids.length} sản phẩm được xóa vĩnh viễn`);
-            break;
-        case "delete-all":
-            await Category.updateMany({ _id: { $in: ids } },
-                {
-                    deleted: true,
-                    deletedAt: new Date()
-                });
-            req.flash("success", `${ids.length} sản phẩm xóa thành công`);
-            break;
-        case "restore":
-            await Category.updateMany({ _id: { $in: ids } },
-                {
-                    deleted: false,
-                    deletedAt: null
-                }
-            );
-            req.flash("success", `${ids.length} sản phẩm được khôi phục thành công`);
-            break;
-        case "change-position":
-            for (const item of ids) {
-                let [id, position] = item.split("-");
-                position = parseInt(position);
-                console.log(id);
-                console.log(position);
-                await Category.updateOne({ _id: id }, { position: position });
-            }
-            req.flash("success", `${ids.length} đổi vị trí thành công`);
-        default:
-            break;
-    }
-    res.redirect('back');
+  const type = req.body.type;
+  switch (type) {
+    case "active":
+      await Category.updateMany({ _id: { $in: ids } }, { status: "active" });
+      req.flash("success", `${ids.length} sản phẩm cập nhật trạng thái thành công`);
+      break;
+    case "inactive":
+      await Category.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      req.flash("success", `${ids.length} sản phẩm cập nhật trạng thái thành công`);
+      break;
+    case "delete-all-forever":
+      await Category.deleteMany({ _id: { $in: ids } });
+      req.flash("success", `${ids.length} sản phẩm được xóa vĩnh viễn`);
+      break;
+    case "delete-all":
+      await Category.updateMany({ _id: { $in: ids } },
+        {
+          deleted: true,
+          deletedAt: new Date()
+        });
+      req.flash("success", `${ids.length} sản phẩm xóa thành công`);
+      break;
+    case "restore":
+      await Category.updateMany({ _id: { $in: ids } },
+        {
+          deleted: false,
+          deletedAt: null
+        }
+      );
+      req.flash("success", `${ids.length} sản phẩm được khôi phục thành công`);
+      break;
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+        console.log(id);
+        console.log(position);
+        await Category.updateOne({ _id: id }, { position: position });
+      }
+      req.flash("success", `${ids.length} đổi vị trí thành công`);
+    default:
+      break;
+  }
+  res.redirect('back');
 }
 //[PATCH] /admin/categories/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
   const id = req.params.id;
   const status = req.params.status;
-  await Category.updateOne({ _id: id},{status: status});
+  await Category.updateOne({ _id: id }, { status: status });
   req.flash("success", "Cập nhật trạng thái thành công");
   const currentPage = req.query.page;
 
@@ -142,28 +148,28 @@ module.exports.changeStatus = async (req, res) => {
 }
 //[GET] /admin/categories/edit/:id
 module.exports.edit = async (req, res) => {
-  try{
+  try {
     const id = req.params.id;
-  let find ={
-    _id : id,
-    deleted: false
-  };
-  const records = await Category.find({
-    deleted: false
-  });
-  const newRecords = createTreeHelper.Tree(records);
-  const record = await Category.findOne(find);
-  res.render("admin/pages/categories/edit", {
-    pageTitle: "Chỉnh Sửa Danh Mục Sản Phẩm",
-    record: record,
-    records: newRecords
+    let find = {
+      _id: id,
+      deleted: false
+    };
+    const records = await Category.find({
+      deleted: false
+    });
+    const newRecords = createTreeHelper.Tree(records);
+    const record = await Category.findOne(find);
+    res.render("admin/pages/categories/edit", {
+      pageTitle: "Chỉnh Sửa Danh Mục Sản Phẩm",
+      record: record,
+      records: newRecords
     }
-  );
+    );
   }
-  catch(err){
+  catch (err) {
     res.redirect(`${systemConfig.prefixAdmin}/categories`);
   }
-  
+
 };
 //[PATCH] /admin/categories/edit/:id
 module.exports.editPatch = async (req, res) => {
