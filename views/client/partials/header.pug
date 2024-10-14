@@ -30,3 +30,7 @@ header.header
               a(href="/products") Sản phẩm
               - const path = "/products";
               +sub-menu(categories, path)
+            li.nav-item
+                a.nav-link(href="/cart" style="margin-top:5px; color: black")
+                  i.fas.fa-shopping-cart
+                  |  Giỏ hàng (#{miniCart ? miniCart.totalQuantity: 0})

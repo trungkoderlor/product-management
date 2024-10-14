@@ -1,0 +1,16 @@
+extends ../../../client/layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/product-layout.pug
+block main
+  h1 Giỏ Hàng
+  .container.my-3
+    .row
+      .col-12
+        +box-head('giỏ hàng')
+  .container.my-3
+    .row
+      .col-12
+        h5 #{cart.products.length} sản phẩm trong giỏ hàng
+  .container.my-3
+  
+    
