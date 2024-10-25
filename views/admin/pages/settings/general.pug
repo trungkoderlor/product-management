@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+
+block main
+
+  h1(class="mb-4") Thêm mới nhóm quyền
+
+  form(
+    action=`${prefixAdmin}/settings/general?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+    div(class="form-group")
+      label(for="websiteName") Tên website
+      input(
+        type="text"
+        class="form-control"
+        id="websiteName"
+        name="websiteName"
+        value = settingGeneral.websiteName
+        required
+      )
+
+    div(class="form-group" upload-image)
+      label(for="logo") Logo
+      input(
+        type="file"
+        class="form-control"
+        id="logo"
+        name="logo"
+        value = settingGeneral.logo
+      )
+    div(class="form-group")
+      label(for="phone") Số điện thoại
+      input(
+        type="text"
+        class="form-control"
+        id="phone"
+        name="phone"
+        value = settingGeneral.phone
+        required
+      )
+    div(class="form-group")
+    label(for="email") Email
+    input(
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      value = settingGeneral.email
+      required
+    )
+    div(class="form-group")
+      label(for="coppyright") Coppyright
+      input(
+        type="text"
+        class="form-control"
+        id="coppyright"
+        name="coppyright"
+        value = settingGeneral.coppyright
+        required
+      )
+    div(class="form-group")
+      button(
+        type="submit"
+        class="btn btn-primary"
+      ) Cập nhật
+
+      

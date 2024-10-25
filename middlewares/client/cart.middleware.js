@@ -1,4 +1,4 @@
-const Cart = require("../../models/cart.model");
+const Cart = require("../../../../../vscode/learn_backend/product-management/models/cart.model");
 module.exports.cartId = async (req, res, next) => {
   if (!req.cookies.cartId) {
     const cart = new Cart();

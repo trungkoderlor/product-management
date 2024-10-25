@@ -1,4 +1,4 @@
-const User = require("../../models/user.model");
+const User = require('../../models/category.model');;
 module.exports.infoUser = async (req, res, next) => {
   if (req.cookies.tokenUser){
     const user = await User.findOne({ 

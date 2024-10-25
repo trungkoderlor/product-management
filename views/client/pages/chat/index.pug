@@ -1,0 +1,48 @@
+extends ../../../client/layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/product-layout.pug
+block main
+  .container.my-3 
+    .row 
+      .col-12
+        +box-head('chat')
+    .row
+      .col-12 
+        .chat 
+          .inner-body 
+            .inner-incoming 
+              .inner-name Chuyên viên tư vấn
+              .inner-content 
+                | Xin chào, tôi có thể giúp gì cho bạn?
+            .inner-outgoing
+              .inner-content 
+                | Tôi muốn hỏi về sản phẩm này
+              
+            .inner-incoming
+              .inner-name Chuyên viên tư vấn
+              .inner-content 
+                | Dạ, sản phẩm này có thể giúp bạn giải quyết vấn đề gì?
+            .inner-outgoing
+              .inner-content 
+                | Tôi muốn hỏi về giá sản phẩm
+            .inner-incoming
+              .inner-name Chuyên viên tư vấn
+              .inner-content 
+                | Giá sản phẩm này là 100.000đ
+          .inner-foot 
+            form(
+              class="inner-form"
+              action
+            )
+              input(
+                type="text"
+                class="inner-input"
+                placeholder="Nhập tin nhắn..."
+                name="content"
+                 )
+              button( type="submit" class="inner-submit" )
+                i.fa-solid.fa-paper-plane
+
+                  
+  
+  

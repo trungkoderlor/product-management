@@ -156,5 +156,90 @@ a {
   .sub-menu  ul li:hover > ul {
     display: block;
   }
-  
+  /* chat */
+  /* Chat Component */
+/* Chat Component */
+.chat {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+
+
+.chat .inner-body {
+  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.chat .inner-body::-webkit-scrollbar {
+  width: 5px;
+}
+.chat .inner-body .inner-incoming,
+.chat .inner-body .inner-outgoing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.chat .inner-body .inner-incoming .inner-content,
+.chat .inner-body .inner-outgoing .inner-content {
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+}
+
+.chat .inner-body .inner-incoming .inner-content {
+  background: #e0e0e0;
+  margin-right: auto;
+}
+
+.chat .inner-body .inner-outgoing .inner-content {
+  background: #007bff;
+  color: #fff;
+  margin-left: auto;
+}
+
+.chat .inner-body .inner-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.chat .inner-foot {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.chat .inner-form {
+  display: flex;
+  align-items: center;
+}
+
+.chat .inner-form input {
+  flex: 1;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.chat .inner-form button {
+  border-radius: 15px;
+  border: 1px solid #F5EDA3;
+  background: #F5EDA3;
+  color: #333;
+  height: 32px;
+  padding: 0 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+  /*end chat */
 

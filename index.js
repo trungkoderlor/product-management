@@ -42,6 +42,11 @@ app.use(express.static("public"));
 app.use(express.static(`${__dirname}/public`));
 route(app);
 routeAdmin(app);
+app.get("*", (req, res)=>{
+    res.render("client/pages/errors/404", {
+        pageTitle: "404 Not Found"
+    })
+})
 //app locatiom var
 app.locals.prefixAdmin = system.prefixAdmin;
 app.locals.moment = moment;
