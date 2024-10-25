@@ -1,5 +1,5 @@
 
-const User = require("../../../../../vscode/learn_backend/product-management/models/user.model");
+const User = require("../../models/user.model");
 module.exports.requireAuth = async (req, res, next) => { 
   if(!req.cookies.tokenUser){
     return res.redirect(`/user/login`);
