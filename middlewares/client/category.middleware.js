@@ -1,5 +1,5 @@
 const Category = require('../../models/category.model');
-const createTreeHelper = require('../../../../../vscode/learn_backend/product-management/helpers/createTree');
+const createTreeHelper = require('../..//helpers/createTree');
 module.exports.category = async (req, res, next) => {
   let find = {
     deleted: false
