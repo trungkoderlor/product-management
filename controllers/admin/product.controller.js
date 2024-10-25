@@ -117,7 +117,10 @@ module.exports.trash = async (req, res) => {
 }
 // [PATH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-
+    const updatedBy={
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
     const status = req.params.status;
 
     const id = req.params.id;
@@ -145,6 +148,10 @@ module.exports.restore = async (req, res) => {
 module.exports.changeMulti = async (req, res) => {
     const ids = req.body.ids.split(", ");
     const type = req.body.type;
+    const updatedBy={
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
     switch (type) {
         case "active":
             await Product.updateMany({ _id: { $in: ids } }, { status: "active" ,$push : {updatedBy: updatedBy}});
